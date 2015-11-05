@@ -42,12 +42,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   .state('home.game', {
     url: '/game/:id',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/current-score.html',
-        controller: 'CurrentGameCtrl'
-      }
-    }
+    templateUrl: 'templates/current-score.html',
+    controller: 'CurrentGameCtrl'
   })
 
 
