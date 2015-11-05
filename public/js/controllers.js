@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
   console.log("home");
     })
 
-.controller('CurrentGameCtrl', function($scope, Chats) {
+.controller('CurrentGameCtrl', function($scope) {
   console.log("game");
 })
 

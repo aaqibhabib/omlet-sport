@@ -36,14 +36,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             url: '/home',
             views: {
               'tabs-home': {
-                templateUrl: 'templates/home.html'
+                templateUrl: 'templates/home.html',
+                controller: "HomeCtrl"
               }
             }
           })
 
           .state('game', {
             url: "/game",
-            templateUrl: "templates/current-score.html"
+            templateUrl: "templates/current-score.html",
+            controller: "CurrentGameCtrl"
 
           });
 
