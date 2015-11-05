@@ -1,18 +1,11 @@
 
-    <!--<ion-view view-title="Home">-->
-        <!--<div class="list card" ng-controller="HomeCtrl">-->
-            <!--<div class="item item-divider">TODAY'S GAMES</div>-->
-            <!--<div class="item item-body">-->
-                <!--<div>-->
-                    <!--<a href="#/game">Go to page!</a>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</ion-view>-->
 
-    <ion-view title="Home">
+    <ion-view title="Today Game">
         <ion-content has-header="true" padding="true">
-            <h1>Home</h1>
-            <a ui-sref="game" class="button">Go To "Bar"</a>
+                <ul class="list">
+                    <li class="item" ui-sref="game" ng-repeat="game in games">
+                        {{game.home}} VS {{game.away}}
+                    </li>
+                </ul>
         </ion-content>
     </ion-view>
