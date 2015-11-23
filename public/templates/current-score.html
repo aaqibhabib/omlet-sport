@@ -1,26 +1,44 @@
 <ion-view view-title="Game">
-  <ion-content class="padding">
-    <div class="list card" ng-controller="CurrentGameCtrl">
-      <div class="item item-divider">4th Quarter</div>
-      <div class="item item-divider">
-        <div class="ion-clock">
-          <b>10.00</b>
+  <ion-content class="padding" ng-controller="CurrentGameCtrl">
+
+    <!--if has not started -->
+    <div ng-if="currentGame.hasStart == false">
+      Game has not started yet
+    </div>
+
+    <!--if has started -->
+    <div ng-if="currentGame.hasStart">
+
+
+      <!--if has ended-->
+      <div class="list card" ng-show="currentGame.isOver">
+        <div class="item item-divider">Final Score</div>
+      </div>
+
+      <!--if the game is playing-->
+      <div class="list card" ng-show="!currentGame.isOver">
+        <div class="item item-divider">{{currentGame.quarter}} Quarter</div>
+        <div class="item item-divider">
+          <div class="ion-clock">
+            <b>{{currentGame.remainTime}}</b>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">CAVALIERS</div>
-      <div class="item item-body">
-        <div>
-          107
+
+      <div class="list card">
+        <div class="item item-divider">{{currentGame.home}}</div>
+        <div class="item item-body">
+          <div>
+            {{currentGame.homeScore}}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">76ers</div>
-      <div class="item item-body">
-        <div>
-          100
+      <div class="list card">
+        <div class="item item-divider">{{currentGame.away}}</div>
+        <div class="item item-body">
+          <div>
+            {{currentGame.awayScore}}
+          </div>
         </div>
       </div>
     </div>

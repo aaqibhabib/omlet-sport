@@ -1,11 +1,40 @@
+<ion-view title="Today Game">
+    <ion-content has-header="true" padding="true">
 
+        <div class="list">
 
-    <ion-view title="Today Game">
-        <ion-content has-header="true" padding="true">
-                <ul class="list">
-                    <li class="item" ui-sref="game" ng-repeat="game in games">
-                        {{game.home}} VS {{game.away}}
-                    </li>
-                </ul>
-        </ion-content>
-    </ion-view>
+            <!-- NBA -->
+            <div class="item item-divider">
+                NBA {{nba.date}}
+            </div>
+
+            <a class="item" ui-sref="game({id: game.gameId})" ng-repeat="game in nba.games">
+                {{game.home}} VS {{game.away}}
+            </a>
+            
+            <!--if there is no nba game today-->
+            <div ng-if="nba.length.length == 0">
+                <a class="item" href="">
+                    No game today
+                </a>
+            </div>
+
+            <!-- NFL -->
+            <div class="item item-divider">
+                NFL {{nfl.date}}
+            </div>
+
+            <a class="item" ui-sref="game" ng-repeat="game in nfl.games">
+                {{game.home}} VS {{game.away}}
+            </a>
+
+            <!--if there is no nfl game today-->
+            <div ng-if="nfl.games.length == 0">
+                <a class="item" href="">
+                    No game today
+                </a>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>
