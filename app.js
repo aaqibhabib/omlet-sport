@@ -34,23 +34,25 @@ var router = express.Router();
 
 // store games
 var games = [];
+var cache = {};
 
-// Get years schduel
+
+// Get years schedule
 var now = new Date();
-var url = baseUrl + '/games/'+ now.getFullYear() +'/REG/schedule.json?api_key=' + key;
+var url = baseUrl + '/games/' + now.getFullYear() + '/REG/schedule.json?api_key=' + key;
 
-rp.get({uri: url, json: true})
-	.then(function(data){
-		for (var i = 0; i < data.weeks.length; i++){
+rp.get({ uri: url, json: true })
+	.then(function (data) {
+		for (var i = 0; i < data.weeks.length; i++) {
 			var week = data.weeks[i];
 			games = [].concat(games, week.games);
 		}
-		
-		for(var i = 0; i < games.length; i++) {
+
+		for (var i = 0; i < games.length; i++) {
 			var game = games[i];
 			game.scheduled = new Date(game.scheduled);
 		}
-		
+
 	});
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
@@ -64,13 +66,13 @@ router.route('/games')
 // get all the sports (accessed at GET http://localhost:8080/api/games)
 // returns the next 16 games;
 	.get(function (req, res) {
-		if(!games.length) res.status(500).json({message: 'No games!'});
-		var gamesToBePLayed = _.filter(games, function(game){
+		if (!games.length) res.status(500).json({ message: 'No games!' });
+		var gamesToBePLayed = _.filter(games, function (game) {
 			return game.scheduled >= Date.now();
 		});
 		
 		// send the next 16 games, 16 games in a week
-		if(gamesToBePLayed.length <= 16) {
+		if (gamesToBePLayed.length <= 16) {
 			res.json(gamesToBePLayed);
 		} else {
 			res.json(gamesToBePLayed.slice(0, 16));
@@ -84,18 +86,27 @@ router.route('/games/:game_id')
 // get the sport with that id
 	.get(function (req, res) {
 		var gameID = req.params.game_id;
-		
-		var url = 'http://api.sportradar.us/nfl-ot1/games/'+ gameID +'/statistics.json?api_key=' + key;
-		rp({uri: url, json: true}).then(function(data){
-			res.json({
-				clock : data.clock,
-				quarter: data.quarter,
-				home: _.cloneDeep(data.summary.home),
-				away: _.cloneDeep(data.summary.away)
+		var url = 'http://api.sportradar.us/nfl-ot1/games/' + gameID + '/statistics.json?api_key=' + key;
+
+		if (!cache[gameID] || Date.now().valueOf() - new Date(cache[gameID].updatedAt).valueOf > 5 * 60 * 1000) {
+			// if not in cache or older than 5 mins, then get data
+			rp({ uri: url, json: true }).then(function (data) {
+				var obj = {
+					clock: data.clock || null,
+					status: data.status || null,
+					quarter: data.quarter,
+					home: _.cloneDeep(data.summary.home),
+					away: _.cloneDeep(data.summary.away),
+					updatedAt: Date.now()
+				}
+				cache[gameID] = obj;
+				res.json(obj);
+			}).error(function (err) {
+				res.status(500).json({ message: err });
 			});
-		}).error(function(err){
-			res.status(500).json({message: err});
-		});
+		} else {
+			res.json(cache[gameID]);
+		}
 	})
 
 
