@@ -21,15 +21,15 @@
 
             <!-- NFL -->
             <div class="item item-divider">
-                NFL {{nfl.date}}
+                NFL {{nfl.scheduled}}
             </div>
 
-            <a class="item" ui-sref="game" ng-repeat="game in nfl.games">
-                {{game.home}} VS {{game.away}}
+            <a class="item" ui-sref="game({id: game.id})" ng-repeat="game in nfl">
+                {{game.home.alias}} VS {{game.away.alias}}
             </a>
 
             <!--if there is no nfl game today-->
-            <div ng-if="nfl.games.length == 0">
+            <div ng-if="nfl.length == 0">
                 <a class="item" href="">
                     No game today
                 </a>

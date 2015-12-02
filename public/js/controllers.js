@@ -15,13 +15,15 @@ angular.module('starter.controllers', [])
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams) {
 
         GameService.getGameById($stateParams.id).then(function(data) {
-            if (data)
-            $scope.currentGame = data;
+            if (data) {
+                $scope.currentGame = data;
+                console.log("get data");
+                console.log(data);
+            }
 
         }, function(reason) {
             console.log("can not get the score because" + reason);
             $scope.currentGame = null;
-        })
+        });
     })
-
 

@@ -25,7 +25,7 @@ angular.module('starter.services', [])
 
             var deferred = $q.defer();
 
-            $http.get("/data/nfl.json").
+            $http.get("/api/games").
                 success(function (data, status, headers, config) {
                     if (data == null) {
                         console.log("return empty list of vacation info");
@@ -43,7 +43,7 @@ angular.module('starter.services', [])
         expose.getGameById = function(id) {
             var deferred = $q.defer();
 
-            $http.get("/data/game" + id + ".json").
+            $http.get("/api/games/" + id).
                 success(function (data, status, headers, config) {
                     if (data == null) {
                         console.log("return empty list of vacation info");

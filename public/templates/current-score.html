@@ -2,42 +2,48 @@
   <ion-content class="padding" ng-controller="CurrentGameCtrl">
 
     <!--if has not started -->
-    <div ng-if="currentGame.hasStart == false">
+    <div ng-if="currentGame.status == 'scheduled'">
       Game has not started yet
+      <div class="list card">
+        <div class="item item-divider">{{currentGame.home.alias}}</div>
+      </div>
+      <div class="list card">
+        <div class="item item-divider">{{currentGame.away.alias}}</div>
+      </div>
     </div>
 
     <!--if has started -->
-    <div ng-if="currentGame.hasStart">
+    <div ng-if="currentGame.status != 'closed' && currentGame.status != 'scheduled'">
 
 
       <!--if has ended-->
-      <div class="list card" ng-show="currentGame.isOver">
+      <div class="list card" ng-show="currentGame.status == 'closed'">
         <div class="item item-divider">Final Score</div>
       </div>
 
       <!--if the game is playing-->
-      <div class="list card" ng-show="!currentGame.isOver">
+      <div class="list card" ng-show="currentGame.status != 'closed'">
         <div class="item item-divider">{{currentGame.quarter}} Quarter</div>
         <div class="item item-divider">
           <div class="ion-clock">
-            <b>{{currentGame.remainTime}}</b>
+            <b>{{currentGame.clock}}</b>
           </div>
         </div>
       </div>
 
       <div class="list card">
-        <div class="item item-divider">{{currentGame.home}}</div>
+        <div class="item item-divider">{{currentGame.home.alias}}</div>
         <div class="item item-body">
           <div>
-            {{currentGame.homeScore}}
+            {{currentGame.home.points}}
           </div>
         </div>
       </div>
       <div class="list card">
-        <div class="item item-divider">{{currentGame.away}}</div>
+        <div class="item item-divider">{{currentGame.away.alias}}</div>
         <div class="item item-body">
           <div>
-            {{currentGame.awayScore}}
+            {{currentGame.away.points}}
           </div>
         </div>
       </div>
