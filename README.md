@@ -7,9 +7,9 @@ Omlet Sport Pinned App
 5. Navigate to `localhost:8080/` for angular app, or `localhost:8080/api/` for api message
 
 # API Documentation
-##/api/games/
+
 ## Resquest
-###/api/games/
+###GET /api/games/
 ## Response
 Returns the next 16 games scheduled to be played from todays date. This will return at most 1 weeks worth of games.
 
@@ -52,15 +52,18 @@ Returns the next 16 games scheduled to be played from todays date. This will ret
   ...
 ]
 ```
-##/api/games/:game_id
+##/api/games/:group_id
 ### Resquest
-####/api/games/c8ca977e-77ad-42fc-a80b-0d4a78e73b87
+####GET /api/games/1234
 ### Response
-Returns the game score, delayed up to 5mins
+Returns the game score for the specified group
+
+Returns HTTP:500 if no game is set
 ```
 {
   "clock": "00:00",
   "status": "closed",
+  "scheduled": "2015-12-07T01:30:00.000Z",
   "quarter": 4,
   "home": {
     "name": "Cowboys",
@@ -85,15 +88,16 @@ Returns the game score, delayed up to 5mins
   "updatedAt": 1448950454988
 }
 ```
-
+##/api/games/:group_id/:game_id
 ### Resquest
-####/api/games/010a5f1e-3af5-48d6-a610-7149cefb6957
+####POST /api/games/0
 ### Response
-Returns the game score, delayed up to 5mins. Null values for scheduled games
+Saves the game for the group, returns game object
 ```
 {
   "clock": null,
   "status": "scheduled",
+  "scheduled": "2015-12-07T01:30:00.000Z",
   "home": {
     "name": "Steelers",
     "market": "Pittsburgh",
