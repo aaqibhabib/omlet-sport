@@ -11,7 +11,7 @@ angular.module('starter.controllers', [])
                 var groupId = "123";
                 $scope.checkOpenGame("123");
             }
-            angular.elements(document.querySelector('#id')).text(groupId);
+            angular.elements(document.querySelector('#debug')).text(groupId);
             GameService.groupId = groupId;
         });
 
