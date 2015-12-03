@@ -88,7 +88,7 @@ router.route('/games/:game_id')
 		var gameID = req.params.game_id;
 		var url = 'http://api.sportradar.us/nfl-ot1/games/' + gameID + '/statistics.json?api_key=' + key;
 
-		if (!cache[gameID] || Date.now().valueOf() - new Date(cache[gameID].updatedAt).valueOf > 5 * 60 * 1000) {
+		if (!cache[gameID] || Date.now().valueOf() - new Date(cache[gameID].updatedAt).valueOf() > 5 * 60 * 1000) {
 			// if not in cache or older than 5 mins, then get data
 			rp({ uri: url, json: true }).then(function (data) {
 				var obj = {
