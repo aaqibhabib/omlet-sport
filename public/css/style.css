@@ -2,3 +2,26 @@
 .item{
 	text-align: center;
 }
+
+.item-divider{
+	background-color: yellowgreen;
+    color: white;
+}
+
+.list-item{
+	margin: 0.2%;
+}
+
+.custom-dark{
+	background-color: black;
+}
+
+.game-home{
+	float: left;
+	margin-left: 8%;
+}
+
+.game-away{
+	float: right;
+	margin-right: 8%;
+}

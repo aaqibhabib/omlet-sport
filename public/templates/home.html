@@ -1,37 +1,38 @@
-<ion-view title="Today Game">
+<ion-view title="UPCOMING GAMES" class="custom-dark">
+
     <ion-content has-header="true" padding="true">
 
-        <div class="list">
-
-            <!-- NBA -->
-            <div class="item item-divider">
-                NBA {{nba.date}}
-            </div>
-
-            <a class="item" ui-sref="game({id: game.gameId})" ng-repeat="game in nba.games">
-                {{game.home}} VS {{game.away}}
-            </a>
-            
-            <!--if there is no nba game today-->
-            <div ng-if="nba.length.length == 0">
-                <a class="item" href="">
-                    No game today
-                </a>
-            </div>
+        <div class="list-card">
 
             <!-- NFL -->
             <div class="item item-divider">
-                NFL {{nfl.scheduled}}
+                NFL 
             </div>
 
-            <a class="item" ui-sref="game({id: game.id})" ng-repeat="game in nfl">
-                {{game.home.alias}} VS {{game.away.alias}}
+            <a class="item list-item" ui-sref="game({id: game.id})" ng-repeat="game in nfl">
+                <div class="game-home">{{game.home.alias}}</div><div class="game-away">{{game.away.alias}}</div>  
             </a>
 
             <!--if there is no nfl game today-->
             <div ng-if="nfl.length == 0">
                 <a class="item" href="">
-                    No game today
+                    No upcoming games
+                </a>
+            </div>
+
+            <!-- NBA -->
+            <div class="item item-divider">
+                NBA 
+            </div>
+
+            <a class="item list-item" ui-sref="game({id: game.gameId})" ng-repeat="game in nba.games">
+                <div class="game-home">{{game.home}}</div><div class="game-away">{{game.away}}</div>  
+            </a>
+            
+            <!--if there is no nba game today-->
+            <div ng-if="nba.length.length == 0">
+                <a class="item" href="">
+                    No upcoming games
                 </a>
             </div>
 
