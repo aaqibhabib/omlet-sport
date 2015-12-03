@@ -3,9 +3,9 @@
 
     <!--if has not started -->
     <div ng-if="currentGame.status == 'scheduled'">
-      <div class="item item-divider">
-        Game has not started yet. Check again on 
-        <span ng-app="" class="scheduled-time">{{1288323623006 | date:'medium'}}</span>!
+      <div class="item item-divider scheduled-div">
+        Game has not started yet. <br> Check again on </br>
+        <br> <span ng-app="" class="scheduled-time">{{currentGame.scheduled | date:'medium'}}</span>! </br>
       </div>
       <div class="scorecard-wrapper">
         <div class="time">
