@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
                 }, function(reason) {
                     $scope.currentGame = null;
                 });
-            }, 3000);
+            }, 1000);
         };
 
         //Timer stop function.
