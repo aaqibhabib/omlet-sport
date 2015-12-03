@@ -66,7 +66,7 @@ angular.module('starter.services', [])
             $http.post("/api/games/" + groupId + "/" + gameId, null).
                 success(function (data, status, headers, config) {
                     if (data == null) {
-                        alert("return empty data");
+
                     }
                     deferred.resolve(data);
                 }).
