@@ -44,7 +44,6 @@ angular.module('starter.controllers', [])
 
             //Initialize the Timer to run every 1000 milliseconds i.e. one second.
             $scope.Timer = $interval(function () {
-                alert("enter interval");
                 GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
                     if (data) {
                         $scope.currentGame = data;
@@ -70,9 +69,6 @@ angular.module('starter.controllers', [])
                 $interval.cancel($scope.Timer);
             }
         };
-
-
         $scope.StartTimer();
-        alert("start timer");
     })
 
