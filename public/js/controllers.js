@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
             GameService.getOpenedGame(groupId).then(function(data) {
                     //if there is a open game, go to the currentGame page
                     alert(data);
-                    $state.go('game', {game: data})
+                    $state.go('game', {game: data, gameId: data.id});
                 },
                 function(reason) {
                     alert(reason);
