@@ -34,16 +34,45 @@ angular.module('starter.controllers', [])
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $interval) {
         var groupId = GameService.groupId;
 
-        GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
-            if (data) {
-                $scope.currentGame = data;
-                if($scope.currentGame.status == "closed" || $scope.currentGame.status == "scheduled") {
+        //Initiate the Timer object.
+        $scope.Timer = null;
 
-                }
+        //Timer start function.
+        $scope.StartTimer = function () {
+            //Set the Timer start message.
+            $scope.Message = "Timer started. ";
+
+            //Initialize the Timer to run every 1000 milliseconds i.e. one second.
+            $scope.Timer = $interval(function () {
+                alert("enter interval");
+                GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
+                    if (data) {
+                        $scope.currentGame = data;
+                        if($scope.currentGame.status == "closed" || $scope.currentGame.status == "scheduled") {
+                            $scope.StopTimer();
+                        }
+                    }
+                }, function(reason) {
+
+                    $scope.currentGame = null;
+                });
+            }, 1000);
+        };
+
+        //Timer stop function.
+        $scope.StopTimer = function () {
+
+            //Set the Timer stop message.
+            $scope.Message = "Timer stopped.";
+
+            //Cancel the Timer.
+            if (angular.isDefined($scope.Timer)) {
+                $interval.cancel($scope.Timer);
             }
-        }, function(reason) {
+        };
 
-            $scope.currentGame = null;
-        });
+
+        $scope.StartTimer();
+        alert("start timer");
     })
 
