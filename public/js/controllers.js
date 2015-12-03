@@ -11,7 +11,7 @@ angular.module('starter.controllers', [])
                 var groupId = "123";
                 $scope.checkOpenGame("123");
             }
-            angular.elements(document.querySelector('#debug')).text(groupId);
+            alert(groupId);
             GameService.groupId = groupId;
         });
 
@@ -28,6 +28,7 @@ angular.module('starter.controllers', [])
 
     })
     .controller('HomeCtrl', function($scope, GameService, $state) {
+        alert("Home");
         GameService.getNbaGames().then(function(data) {
             $scope.nba = data;
         });
@@ -39,7 +40,7 @@ angular.module('starter.controllers', [])
 
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $window) {
         var groupId = GameService.groupId;
-        angular.elements(document.querySelector('#id')).text("current" + groupId);
+        alert("current" + groupId);
         GameService.getGameById($stateParams.id, groupId).then(function(data) {
             if (data) {
                 $scope.currentGame = data;
