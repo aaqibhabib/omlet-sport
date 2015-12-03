@@ -63,7 +63,7 @@ angular.module('starter.services', [])
         expose.getGameById = function(gameId, groupId) {
             var deferred = $q.defer();
 
-            $http.post("/api/games/" + groupId + "/" + gameId).
+            $http.post("/api/games/" + groupId + "/" + gameId, null).
                 success(function (data, status, headers, config) {
                     if (data == null) {
                         console.log("return empty list of vacation info");
