@@ -9,7 +9,7 @@
                 NFL 
             </div>
 
-            <a class="item list-item" ui-sref="game({id: game.id})" ng-repeat="game in nfl">
+            <a class="item list-item" ui-sref="game({gameId: game.id})" ng-repeat="game in nfl">
                 <div class="game-home">{{game.home.alias}}</div><div class="game-away">{{game.away.alias}}</div>  
             </a>
 
@@ -25,7 +25,7 @@
                 NBA 
             </div>
 
-            <a class="item list-item" ui-sref="game({id: game.gameId})" ng-repeat="game in nba.games">
+            <a class="item list-item" ui-sref="game({gameId: game.gameId})" ng-repeat="game in nba.games">
                 <div class="game-home">{{game.home}}</div><div class="game-away">{{game.away}}</div>  
             </a>
             

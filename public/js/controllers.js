@@ -11,7 +11,7 @@ angular.module('starter.controllers', [])
                 var groupId = "123";
                 $scope.checkOpenGame("123");
             }
-            
+
             GameService.groupId = groupId;
             alert("store" + groupId);
         });
@@ -42,6 +42,7 @@ angular.module('starter.controllers', [])
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $window) {
         var groupId = GameService.groupId;
         alert("current" + groupId);
+        alert("game id:" + $stateParams.gameId);
 
         //use interval to get live
         var stop;
@@ -51,7 +52,7 @@ angular.module('starter.controllers', [])
 
             stop = $interval(function() {
 
-                GameService.getGameById($stateParams.id, groupId).then(function(data) {
+                GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
                     if (data) {
                         $scope.currentGame = data;
                         if($scope.currentGame.status == "closed") {

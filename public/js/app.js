@@ -34,7 +34,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
           .state('game', {
             url: "/gameDetails",
-            params: {game: null},
+            params:
+              {game: null, gameId: null},
             templateUrl: "templates/current-score.html",
             controller: "CurrentGameCtrl"
 
