@@ -6,7 +6,7 @@ angular.module('starter.services', [])
         expose.getOpenedGame = function(groupId) {
             var deferred = $q.defer();
 
-            $http.get("/games/" + groupId).
+            $http.get("/api/games/" + groupId).
                 success(function (data, status, headers, config) {
                     if (data == null) {
                         console.log("return empty list of vacation info");
@@ -17,8 +17,8 @@ angular.module('starter.services', [])
                 error(function (data, status, headers, config) {
                     console.log("could not get the vacation info, error status is " + status
                     + " the response content is " + data);
-                    alert(data.message);
-                    deferred.reject(data.message + status + headers + config);
+
+                    deferred.reject(data + status + headers + config);
                 });
             return deferred.promise;
         }
