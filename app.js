@@ -206,6 +206,7 @@ function getGameAsync(gameID) {
 		// if not in cache or older than 5 mins, then get data
 		rp({ uri: url, json: true }).then(function (data) {
 			var obj = {
+				id: data.id,
 				clock: data.clock || null,
 				status: data.status || null,
 				quarter: data.quarter,
