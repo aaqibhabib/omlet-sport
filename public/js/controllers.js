@@ -39,7 +39,7 @@ angular.module('starter.controllers', [])
         });
     })
 
-    .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $window) {
+    .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $interval) {
         var groupId = GameService.groupId;
         alert("current" + groupId);
         alert("game id:" + $stateParams.gameId);
@@ -49,9 +49,10 @@ angular.module('starter.controllers', [])
         $scope.update = function() {
             // Don't start a new update
             if ( angular.isDefined(stop) ) return;
-
+            alert("enter stop");
             stop = $interval(function() {
 
+                alert("enter interval");
                 GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
                     if (data) {
                         $scope.currentGame = data;
