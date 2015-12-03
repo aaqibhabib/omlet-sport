@@ -4,13 +4,14 @@ angular.module('starter.controllers', [])
         Omlet.ready(function(){
             if(Omlet.isInstalled()){
                 var groupId = Omlet.scope.feed_key;
+
                 $scope.checkOpenGame(groupId);
 
             } else {
                 var groupId = "123";
                 $scope.checkOpenGame("123");
             }
-
+            angular.elements(document.querySelector('#id')).text(groupId);
             GameService.groupId = groupId;
         });
 
@@ -38,7 +39,7 @@ angular.module('starter.controllers', [])
 
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $window) {
         var groupId = GameService.groupId;
-
+        angular.elements(document.querySelector('#id')).text("current" + groupId);
         GameService.getGameById($stateParams.id, groupId).then(function(data) {
             if (data) {
                 $scope.currentGame = data;
