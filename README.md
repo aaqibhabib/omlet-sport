@@ -90,7 +90,7 @@ Returns HTTP:500 if no game is set
 ```
 ##/api/games/:group_id/:game_id
 ### Resquest
-####POST /api/games/0
+####POST /api/games/1234/010a5f1e-3af5-48d6-a610-7149cefb6957
 ### Response
 Saves the game for the group, returns game object
 ```
