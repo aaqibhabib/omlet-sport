@@ -17,7 +17,8 @@ angular.module('starter.services', [])
                 error(function (data, status, headers, config) {
                     console.log("could not get the vacation info, error status is " + status
                     + " the response content is " + data);
-                    deferred.reject(data + status + headers + config);
+                    alert(data.message);
+                    deferred.reject(data.message + status + headers + config);
                 });
             return deferred.promise;
         }
@@ -62,18 +63,14 @@ angular.module('starter.services', [])
 
         expose.getGameById = function(gameId, groupId) {
             var deferred = $q.defer();
-
-            alert("try to post");
             $http.post("/api/games/" + groupId + "/" + gameId, null).
                 success(function (data, status, headers, config) {
                     if (data == null) {
-                        alert("return empty list of vacation info");
+                        alert("return empty data");
                     }
                     deferred.resolve(data);
                 }).
                 error(function (data, status, headers, config) {
-                    alert("could not get the vacation info, error status is " + status
-                    + " the response content is " + data);
                     deferred.reject(data);
                 });
             return deferred.promise;
