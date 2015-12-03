@@ -1,7 +1,29 @@
 angular.module('starter.controllers', [])
+    .controller('OmletCtrl', function($scope, GameService, $state, $window) {
 
-    .controller('HomeCtrl', function($scope, GameService) {
+        Omlet.ready(function(){
+            if(Omlet.isInstalled()){
+                var groupId = Omlet.scope.feed_key;
+                $scope.checkOpenGame(groupId);
 
+            } else {
+                $scope.checkOpenGame("123");
+            }
+        });
+
+        $scope.checkOpenGame = function(groupId) {
+            //check if there is a game open
+            GameService.getOpenedGame(groupId).then(function(data) {
+                    //if there is a open game, go to the currentGame page
+                    $state.go('gameDetails', {game: data})
+                },
+                function(reason) {
+                    $state.go('tabs.home');
+                })
+        }
+
+    })
+    .controller('HomeCtrl', function($scope, GameService, $state) {
         GameService.getNbaGames().then(function(data) {
             $scope.nba = data;
         });
@@ -9,16 +31,15 @@ angular.module('starter.controllers', [])
         GameService.getNflGames().then(function(data) {
             $scope.nfl = data;
         });
-
     })
 
-    .controller('CurrentGameCtrl', function($scope, GameService, $stateParams) {
+    .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $window) {
+        var groupId = $window.groupId;
 
-        GameService.getGameById($stateParams.id).then(function(data) {
+        GameService.getGameById($stateParams.id, groupId).then(function(data) {
             if (data) {
                 $scope.currentGame = data;
                 console.log("get data");
-                console.log(data);
             }
 
         }, function(reason) {
