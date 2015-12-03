@@ -44,40 +44,42 @@ angular.module('starter.controllers', [])
         alert("current" + groupId);
         alert("game id:" + $stateParams.gameId);
 
-        //use interval to get live
-        var stop;
-        $scope.update = function() {
-            // Don't start a new update
-            if ( angular.isDefined(stop) ) return;
-            alert("enter stop");
-            stop = $interval(function() {
-
-                alert("enter interval");
-                GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
-                    if (data) {
-                        $scope.currentGame = data;
-                        if($scope.currentGame.status == "closed") {
-                            $scope.stopUpdate();
-                        }
-                    }
-                }, function(reason) {
-                    alert("can not get the score because" + reason);
-                    $scope.currentGame = null;
-                });
-
-            }, 60000);
-        };
-
-        $scope.stopUpdate = function() {
-            if (angular.isDefined(stop)) {
-                $interval.cancel(stop);
-                stop = undefined;
+        GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
+            if (data) {
+                $scope.currentGame = data;
+                if($scope.currentGame.status == "closed") {
+                    $scope.stopUpdate();
+                }
             }
-        };
-
-        $scope.$on('$destroy', function() {
-            // Make sure that the interval is destroyed too
-            $scope.stopUpdate();
+        }, function(reason) {
+            alert("can not get the score because" + reason);
+            $scope.currentGame = null;
         });
+
+        //use interval to get live
+        //var stop;
+        //$scope.update = function() {
+        //    // Don't start a new update
+        //    if ( angular.isDefined(stop) ) return;
+        //    alert("enter stop");
+        //    stop = $interval(function() {
+        //
+        //        alert("enter interval");
+        //
+        //
+        //    }, 60000);
+        //};
+        //
+        //$scope.stopUpdate = function() {
+        //    if (angular.isDefined(stop)) {
+        //        $interval.cancel(stop);
+        //        stop = undefined;
+        //    }
+        //};
+        //
+        //$scope.$on('$destroy', function() {
+        //    // Make sure that the interval is destroyed too
+        //    $scope.stopUpdate();
+        //});
     })
 
