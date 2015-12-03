@@ -13,6 +13,8 @@ var morgan = require('morgan');
 var Promise = require("bluebird");
 
 var demo = true;
+var counter = 59;
+var score = 0;
 
 var _ = require('lodash');
 var rp = require('request-promise');
@@ -144,7 +146,6 @@ router.route('/games/:group_id')
 	});
 
 router.route('/games/:group_id/test')
-
 	// get the sport with that id
 	.post(function (req, res) {
 		var groupID = req.params.group_id;
@@ -152,9 +153,12 @@ router.route('/games/:group_id/test')
 		var d = new Date();
 		var d2 = new Date();
 		d2.setHours(d.getHours() - 1);
-		
+		var mins = counter;
+		if(counter < 10) {
+			mins = '0' + counter;
+		}
 		res.json({
-			"clock": "04:46",
+			"clock": "04:" + mins,
 			"status": "inprogress",
 			"scheduled": d2.toISOString(),
 			"quarter": 4,
@@ -166,7 +170,7 @@ router.route('/games/:group_id/test')
 				"used_timeouts": 3,
 				"remaining_timeouts": 0,
 				"id": "e627eec7-bbae-4fa4-8e73-8e1d6bc5c060",
-				"points": 27
+				"points": (score % 27)
 			},
 			"away": {
 				"name": "Stanford Univeristy",
@@ -176,10 +180,16 @@ router.route('/games/:group_id/test')
 				"used_timeouts": 0,
 				"remaining_timeouts": 3,
 				"id": "04aa1c9d-66da-489d-b16a-1dee3f2eec4d",
-				"points": 13
+				"points": (score % 17)
 			},
 			"updatedAt": Date.now().valueOf()
 		})
+		if(counter < 1) {
+			counter = 59;
+		} else {
+			counter--;
+		}
+		score++;
 	})
 
 // on routes that end in /sports/:sport_id
