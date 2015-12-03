@@ -97,6 +97,7 @@ router.route('/games/:game_id')
 					quarter: data.quarter,
 					home: _.cloneDeep(data.summary.home),
 					away: _.cloneDeep(data.summary.away),
+					scheduled: data.scheduled,
 					updatedAt: Date.now()
 				}
 				cache[gameID] = obj;
