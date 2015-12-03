@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var app = express();
 var morgan = require('morgan');
+var Promise = require("bluebird");
 
 var _ = require('lodash');
 var rp = require('request-promise');
@@ -34,7 +35,12 @@ var router = express.Router();
 
 // store games
 var games = [];
+
+// {game_id: Game Object}
 var cache = {};
+
+// {group_id : game_id}
+var sessions = {};
 
 
 // Get years schedule
@@ -61,6 +67,7 @@ router.get('/', function (req, res) {
 });
 
 // on routes that end in /sports
+// Returns game schd
 // ----------------------------------------------------
 router.route('/games')
 // get all the sports (accessed at GET http://localhost:8080/api/games)
@@ -78,37 +85,63 @@ router.route('/games')
 			res.json(gamesToBePLayed.slice(0, 16));
 		}
 	});
+	
+// ----------------------------------------------------
+router.route('/games/:group_id')
+	.get(function (req, res) {
+		var groupID = req.params.group_id;
+		var gameID = sessions[groupID];
+		if (!gameID) {
+			res.status(500).json({ message: 'No game set for group: ' + groupID });
+		} else {
+			getGameAsync(gameID).then(function(gameObj){
+				res.json(gameObj);
+			}).error(function(err){
+				res.status(500).json(err);
+			});
+		}
+	});
 
 // on routes that end in /sports/:sport_id
 // ----------------------------------------------------
-router.route('/games/:game_id')
+router.route('/games/:group_id/:game_id')
 
 // get the sport with that id
-	.get(function (req, res) {
+	.post(function (req, res) {
+		var groupID = req.params.group_id;
 		var gameID = req.params.game_id;
-		var url = 'http://api.sportradar.us/nfl-ot1/games/' + gameID + '/statistics.json?api_key=' + key;
-
-		if (!cache[gameID] || Date.now().valueOf() - new Date(cache[gameID].updatedAt).valueOf() > 5 * 60 * 1000) {
-			// if not in cache or older than 5 mins, then get data
-			rp({ uri: url, json: true }).then(function (data) {
-				var obj = {
-					clock: data.clock || null,
-					status: data.status || null,
-					quarter: data.quarter,
-					home: _.cloneDeep(data.summary.home),
-					away: _.cloneDeep(data.summary.away),
-					scheduled: data.scheduled,
-					updatedAt: Date.now()
-				}
-				cache[gameID] = obj;
-				res.json(obj);
-			}).error(function (err) {
-				res.status(500).json({ message: err });
-			});
-		} else {
-			res.json(cache[gameID]);
-		}
+		sessions[groupID] = gameID;
+		
+		getGameAsync(gameID).then(function(gameObj){
+			res.json(gameObj);
+		}).error(function(err){
+			res.status(500).json(err);
+		});
 	})
+
+function getGameAsync(gameID) {
+	var myPromise = Promise.defer();
+	var url = 'http://api.sportradar.us/nfl-ot1/games/' + gameID + '/statistics.json?api_key=' + key;
+	if (!cache[gameID] || Date.now().valueOf() - new Date(cache[gameID].updatedAt).valueOf() > 5 * 60 * 1000) {
+		// if not in cache or older than 5 mins, then get data
+		rp({ uri: url, json: true }).then(function (data) {
+			var obj = {
+				clock: data.clock || null,
+				status: data.status || null,
+				quarter: data.quarter,
+				home: _.cloneDeep(data.summary.home),
+				away: _.cloneDeep(data.summary.away),
+				scheduled: data.scheduled,
+				updatedAt: Date.now()
+			}
+			cache[gameID] = obj;
+			myPromise.resolve(obj);
+		}).error(function () { myPromise.reject({message: 'Could not get game: ' + gameID}) });
+	} else {
+		myPromise.resolve(cache[gameID])
+	}
+	return myPromise.promise;
+}
 
 
 // REGISTER OUR ROUTES -------------------------------
