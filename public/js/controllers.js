@@ -27,8 +27,8 @@ angular.module('starter.controllers', [])
                     alert(data);
                     $state.go('gameDetails', {game: data})
                 },
-                function(reason) {
-                    alert(reason);
+                function(reason, status, error) {
+                    alert(reason + " " + status + " " + error);
                     GameService.getNflGames().then(function(data) {
                         $scope.nfl = data;
                     });
