@@ -1,6 +1,10 @@
 angular.module('starter.controllers', [])
     .controller('OmletCtrl', function($scope, GameService, $state, $window) {
 
+    })
+    .controller('HomeCtrl', function($scope, GameService, $state) {
+        alert("Home");
+
         Omlet.ready(function(){
             if(Omlet.isInstalled()){
                 var groupId = Omlet.scope.feed_key;
@@ -25,20 +29,11 @@ angular.module('starter.controllers', [])
                 },
                 function(reason) {
                     alert(reason);
-                    $state.go('tabs.home');
+                    GameService.getNflGames().then(function(data) {
+                        $scope.nfl = data;
+                    });
                 })
         }
-
-    })
-    .controller('HomeCtrl', function($scope, GameService, $state) {
-        alert("Home");
-        GameService.getNbaGames().then(function(data) {
-            $scope.nba = data;
-        });
-
-        GameService.getNflGames().then(function(data) {
-            $scope.nfl = data;
-        });
     })
 
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $interval) {

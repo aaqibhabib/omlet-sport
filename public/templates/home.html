@@ -20,22 +20,6 @@
                 </a>
             </div>
 
-            <!-- NBA -->
-            <div class="item item-divider">
-                NBA 
-            </div>
-
-            <a class="item list-item" ui-sref="game({gameId: game.gameId})" ng-repeat="game in nba.games">
-                <div class="game-home">{{game.home}}</div><div class="game-away">{{game.away}}</div>  
-            </a>
-            
-            <!--if there is no nba game today-->
-            <div ng-if="nba.length.length == 0">
-                <a class="item" href="">
-                    No upcoming games
-                </a>
-            </div>
-
         </div>
     </ion-content>
 </ion-view>
