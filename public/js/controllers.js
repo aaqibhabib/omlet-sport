@@ -7,8 +7,11 @@ angular.module('starter.controllers', [])
                 $scope.checkOpenGame(groupId);
 
             } else {
+                var groupId = "123";
                 $scope.checkOpenGame("123");
             }
+
+            GameService.groupId = groupId;
         });
 
         $scope.checkOpenGame = function(groupId) {
@@ -34,7 +37,7 @@ angular.module('starter.controllers', [])
     })
 
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $window) {
-        var groupId = $window.groupId;
+        var groupId = GameService.groupId;
 
         GameService.getGameById($stateParams.id, groupId).then(function(data) {
             if (data) {

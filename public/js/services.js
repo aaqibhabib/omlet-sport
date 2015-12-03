@@ -1,6 +1,7 @@
 angular.module('starter.services', [])
     .factory('GameService', function ($http, $q) {
         var expose = {};
+        expose.groupId = null;
 
         expose.getOpenedGame = function(groupId) {
             var deferred = $q.defer();
