@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-    .controller('OmletCtrl', function($scope, GameSerivce, $state) {
+    .controller('OmletCtrl', function($scope, GameService, $state) {
         Omlet.ready(function(){
             if(Omlet.isInstalled()){
                 var groupId = Omlet.scope.feed_key;
