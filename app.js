@@ -12,6 +12,8 @@ var app = express();
 var morgan = require('morgan');
 var Promise = require("bluebird");
 
+var demo = true;
+
 var _ = require('lodash');
 var rp = require('request-promise');
 
@@ -79,6 +81,45 @@ router.route('/games')
 		});
 		
 		// send the next 16 games, 16 games in a week
+		var d = new Date();
+		var d2 = new Date();
+		d2.setHours(d.getHours() - 1);
+		if (demo) {
+			gamesToBePLayed.unshift({
+				"id": "test",
+				"status": "inprogress",
+				"reference": "test",
+				"number": 23,
+				"scheduled": d2.toUTCString(),
+				"venue": {
+					"id": "7349a2e6-0ac9-410b-8bd2-ca58c9f7aa34",
+					"name": "Heinz Field",
+					"city": "Pittsburgh",
+					"state": "PA",
+					"country": "USA",
+					"zip": "15212",
+					"address": "100 Art Rooney Avenue",
+					"capacity": 65050,
+					"surface": "turf",
+					"roof_type": "outdoor"
+				},
+				"home": {
+					"name": "Carnegie Mellon University",
+					"alias": "CMU",
+					"game_number": 12,
+					"id": "cb2f9f1f-ac67-424e-9e72-1475cb0ed398"
+				},
+				"away": {
+					"name": "Stanford Univeristy",
+					"alias": "STU",
+					"game_number": 12,
+					"id": "82cf9565-6eb9-4f01-bdbd-5aa0d472fcd9"
+				},
+				"broadcast": {
+					"network": "NBC"
+				}
+			});
+		}
 		if (gamesToBePLayed.length <= 16) {
 			res.json(gamesToBePLayed);
 		} else {
@@ -94,13 +135,52 @@ router.route('/games/:group_id')
 		if (!gameID) {
 			res.status(500).json({ message: 'No game set for group: ' + groupID });
 		} else {
-			getGameAsync(gameID).then(function(gameObj){
+			getGameAsync(gameID).then(function (gameObj) {
 				res.json(gameObj);
-			}).error(function(err){
+			}).error(function (err) {
 				res.status(500).json(err);
 			});
 		}
 	});
+
+router.route('/games/:group_id/test')
+
+	// get the sport with that id
+	.post(function (req, res) {
+		var groupID = req.params.group_id;
+		
+		var d = new Date();
+		var d2 = new Date();
+		d2.setHours(d.getHours() - 1);
+		
+		res.json({
+			"clock": "04:46",
+			"status": "inprogress",
+			"scheduled": d2.toISOString(),
+			"quarter": 4,
+			"home": {
+				"name": "Carnegie Mellon University",
+				"market": "Pittsburgh",
+				"alias": "CMU",
+				"reference": "4949",
+				"used_timeouts": 3,
+				"remaining_timeouts": 0,
+				"id": "e627eec7-bbae-4fa4-8e73-8e1d6bc5c060",
+				"points": 27
+			},
+			"away": {
+				"name": "Stanford Univeristy",
+				"market": "Palo Alto",
+				"alias": "STU",
+				"reference": "4962",
+				"used_timeouts": 0,
+				"remaining_timeouts": 3,
+				"id": "04aa1c9d-66da-489d-b16a-1dee3f2eec4d",
+				"points": 13
+			},
+			"updatedAt": Date.now().valueOf()
+		})
+	})
 
 // on routes that end in /sports/:sport_id
 // ----------------------------------------------------
@@ -111,10 +191,10 @@ router.route('/games/:group_id/:game_id')
 		var groupID = req.params.group_id;
 		var gameID = req.params.game_id;
 		sessions[groupID] = gameID;
-		
-		getGameAsync(gameID).then(function(gameObj){
+
+		getGameAsync(gameID).then(function (gameObj) {
 			res.json(gameObj);
-		}).error(function(err){
+		}).error(function (err) {
 			res.status(500).json(err);
 		});
 	})
@@ -136,7 +216,7 @@ function getGameAsync(gameID) {
 			}
 			cache[gameID] = obj;
 			myPromise.resolve(obj);
-		}).error(function () { myPromise.reject({message: 'Could not get game: ' + gameID}) });
+		}).error(function () { myPromise.reject({ message: 'Could not get game: ' + gameID }) });
 	} else {
 		myPromise.resolve(cache[gameID])
 	}
