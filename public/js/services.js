@@ -17,7 +17,7 @@ angular.module('starter.services', [])
                 error(function (data, status, headers, config) {
                     console.log("could not get the vacation info, error status is " + status
                     + " the response content is " + data);
-                    deferred.reject(data);
+                    deferred.reject(data + status + headers + config);
                 });
             return deferred.promise;
         }
