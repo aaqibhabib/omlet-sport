@@ -11,8 +11,9 @@ angular.module('starter.controllers', [])
                 var groupId = "123";
                 $scope.checkOpenGame("123");
             }
-            alert(groupId);
+            
             GameService.groupId = groupId;
+            alert("store" + groupId);
         });
 
         $scope.checkOpenGame = function(groupId) {
@@ -41,15 +42,40 @@ angular.module('starter.controllers', [])
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $window) {
         var groupId = GameService.groupId;
         alert("current" + groupId);
-        GameService.getGameById($stateParams.id, groupId).then(function(data) {
-            if (data) {
-                $scope.currentGame = data;
-                console.log("get data");
-            }
 
-        }, function(reason) {
-            console.log("can not get the score because" + reason);
-            $scope.currentGame = null;
+        //use interval to get live
+        var stop;
+        $scope.update = function() {
+            // Don't start a new update
+            if ( angular.isDefined(stop) ) return;
+
+            stop = $interval(function() {
+
+                GameService.getGameById($stateParams.id, groupId).then(function(data) {
+                    if (data) {
+                        $scope.currentGame = data;
+                        if($scope.currentGame.status == "closed") {
+                            $scope.stopUpdate();
+                        }
+                    }
+                }, function(reason) {
+                    alert("can not get the score because" + reason);
+                    $scope.currentGame = null;
+                });
+
+            }, 60000);
+        };
+
+        $scope.stopUpdate = function() {
+            if (angular.isDefined(stop)) {
+                $interval.cancel(stop);
+                stop = undefined;
+            }
+        };
+
+        $scope.$on('$destroy', function() {
+            // Make sure that the interval is destroyed too
+            $scope.stopUpdate();
         });
     })
 
