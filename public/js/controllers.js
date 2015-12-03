@@ -20,9 +20,11 @@ angular.module('starter.controllers', [])
             //check if there is a game open
             GameService.getOpenedGame(groupId).then(function(data) {
                     //if there is a open game, go to the currentGame page
+                    alert(data);
                     $state.go('gameDetails', {game: data})
                 },
                 function(reason) {
+                    alert(reason);
                     $state.go('tabs.home');
                 })
         }
@@ -44,42 +46,49 @@ angular.module('starter.controllers', [])
         alert("current" + groupId);
         alert("game id:" + $stateParams.gameId);
 
-        GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
-            if (data) {
-                $scope.currentGame = data;
-                if($scope.currentGame.status == "closed") {
-                    $scope.stopUpdate();
-                }
-            }
-        }, function(reason) {
-            alert("can not get the score because" + reason);
-            $scope.currentGame = null;
+        var promise;
+
+        // starts the interval
+        $scope.start = function() {
+            // stops any running interval to avoid two intervals running at the same time
+            $scope.stop();
+
+            // store the interval promise
+            promise = $interval(function() {
+                alert("enter ")
+                GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
+                    if (data) {
+                        $scope.currentGame = data;
+                        if($scope.currentGame.status == "closed" || $scope.currentGame.status == "scheduled") {
+                            $scope.stop();
+                        }
+                    }
+                }, function(reason) {
+                    alert("can not get the score because" + reason);
+                    $scope.currentGame = null;
+                });
+            }, 60000);
+        };
+
+        // stops the interval
+        $scope.stop = function() {
+            $interval.cancel(promise);
+        };
+
+        // starting the interval by default
+        $scope.start();
+
+        // stops the interval when the scope is destroyed,
+        // this usually happens when a route is changed and
+        // the ItemsController $scope gets destroyed. The
+        // destruction of the ItemsController scope does not
+        // guarantee the stopping of any intervals, you must
+        // be responsible of stopping it when the scope is
+        // is destroyed.
+        $scope.$on('$destroy', function() {
+            $scope.stop();
         });
 
-        //use interval to get live
-        //var stop;
-        //$scope.update = function() {
-        //    // Don't start a new update
-        //    if ( angular.isDefined(stop) ) return;
-        //    alert("enter stop");
-        //    stop = $interval(function() {
-        //
-        //        alert("enter interval");
-        //
-        //
-        //    }, 60000);
-        //};
-        //
-        //$scope.stopUpdate = function() {
-        //    if (angular.isDefined(stop)) {
-        //        $interval.cancel(stop);
-        //        stop = undefined;
-        //    }
-        //};
-        //
-        //$scope.$on('$destroy', function() {
-        //    // Make sure that the interval is destroyed too
-        //    $scope.stopUpdate();
-        //});
+
     })
 
