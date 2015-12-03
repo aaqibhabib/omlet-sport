@@ -1,7 +1,5 @@
 angular.module('starter.controllers', [])
-
-    .controller('HomeCtrl', function($scope, GameService, $state) {
-
+    .controller('OmletCtrl', function($scope, GameSerivce, $state) {
         Omlet.ready(function(){
             if(Omlet.isInstalled()){
                 var groupId = Omlet.scope.feed_key;
@@ -20,15 +18,17 @@ angular.module('starter.controllers', [])
             //check if there is a game open
             GameService.getOpenedGame(groupId).then(function(data) {
                     //if there is a open game, go to the currentGame page
-
                     $state.go('game', {game: data, gameId: data.id});
                 },
                 function(reason) {
-                    GameService.getNflGames().then(function(data) {
-                        $scope.nfl = data;
-                    });
+                    $state.go('tabs.home');
                 })
         }
+    })
+    .controller('HomeCtrl', function($scope, GameService, $state) {
+        GameService.getNflGames().then(function(data) {
+            $scope.nfl = data;
+        });
     })
 
     .controller('CurrentGameCtrl', function($scope, GameService, $stateParams, $interval) {

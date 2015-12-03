@@ -19,7 +19,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         // setup an abstract state for the tabss directive
           .state('tabs', {
             abstract: true,
-            templateUrl: "templates/tabs.html"
+            templateUrl: "templates/tabs.html",
+            controller: "OmletCtrl"
           })
 
           .state('tabs.home', {
