@@ -74,8 +74,11 @@ angular.module('starter.controllers', [])
         var title = GameService.currentGame.home.alias + " VS " + GameService.currentGame.away.alias;
 
         $scope.submitForm = function() {
+            alert("enter submit");
             Omlet.ready(function() {
+                alert("before rdl");
                 if(!isFromRDL()) {
+                    alert("enter rdl");
                     var rdl = Omlet.createRDL({
                         noun: "pin-app",
                         displayTitle: title,
