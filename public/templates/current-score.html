@@ -30,7 +30,6 @@
         </div>
       </div>
     </div>
-    </div>
 
     <!--if has started -->
     <div ng-if="currentGame.status != 'closed' && currentGame.status != 'scheduled'">
@@ -45,30 +44,36 @@
         <div class="item item-divider">Quarter {{currentGame.quarter}}</div>
       </div>
 
-          <div class="scorecard-wrapper">
-            <div class="time">
-              <svg width="120px" height="120px">
-                <circle class="time-counter" stroke-width="6" cx="60" cy="60" r="60">
-                </circle>
-              </svg>
-              <div class="min" >{{currentGame.clock}}
-              </div>
-            </div>
-            <div class="team-top">
-              <p>{{currentGame.home.alias}}</p>
-            </div>
-            <div class="score-top">
-              <p contenteditable="true">{{currentGame.home.points}}</p>
-            </div>
-            <div class="team-bottom">
-              <p>{{currentGame.away.alias}}</p>
-            </div>
-            <div class="score-bottom">
-              <p contenteditable="true">{{currentGame.away.points}}</p>
-            </div>
+      <div class="scorecard-wrapper">
+        <div class="time">
+          <svg width="120px" height="120px">
+            <circle class="time-counter" stroke-width="6" cx="60" cy="60" r="60">
+            </circle>
+          </svg>
+          <div class="min" >{{currentGame.clock}}
           </div>
         </div>
+        <div class="team-top">
+          <p>{{currentGame.home.alias}}</p>
+        </div>
+        <div class="score-top">
+          <p contenteditable="true">{{currentGame.home.points}}</p>
+        </div>
+        <div class="team-bottom">
+          <p>{{currentGame.away.alias}}</p>
+        </div>
+        <div class="score-bottom">
+          <p contenteditable="true">{{currentGame.away.points}}</p>
+        </div>
+      </div>
+
+      <form name="commentForm" action="#" ng-submit="submitForm()">
+        <input type="text" ng-model="form.comment" placeholder="Comment...">
+        <input type="submit">
+      </form>
     </div>
+
+
   </ion-content>
 </ion-view>
 

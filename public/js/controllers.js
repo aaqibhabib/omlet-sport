@@ -3,7 +3,6 @@ angular.module('starter.controllers', [])
         Omlet.ready(function(){
             if(Omlet.isInstalled()){
                 var groupId = Omlet.scope.feed_key;
-
                 $scope.checkOpenGame(groupId);
 
             } else {
@@ -47,6 +46,7 @@ angular.module('starter.controllers', [])
                 GameService.getGameById($stateParams.gameId, groupId).then(function(data) {
                     if (data) {
                         $scope.currentGame = data;
+                        GameService.currentGame = data;
                         if($scope.currentGame.status == "closed" || $scope.currentGame.status == "scheduled") {
                             $scope.StopTimer();
                         }
@@ -69,5 +69,25 @@ angular.module('starter.controllers', [])
             }
         };
         $scope.StartTimer();
+    })
+    .controller('FormCtrl', function($scope, $http, GameService) {
+        var title = GameService.currentGame.home.alias + " VS " + GameService.currentGame.away.alias;
+
+        $scope.submitForm = function() {
+            $http.post('http://posttestserver.com/post.php?dir=jsfiddle', JSON.stringify(data)).success(function(){/*success callback*/});
+            Omlet.ready(function() {
+                if(!isFromRDL()) {
+                    var rdl = Omlet.createRDL({
+                        noun: "pin-app",
+                        displayTitle: title,
+                        displayText: $scope.data.comment,
+                        json: {game: GameService.currentGame, gameId: GameService.currentGame.id},
+                        webCallback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails",
+                        callback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails"
+                    });
+                    Omlet.exit(rdl);
+                }
+            })
+        };
     })
 
