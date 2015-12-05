@@ -74,7 +74,6 @@ angular.module('starter.controllers', [])
         var title = GameService.currentGame.home.alias + " VS " + GameService.currentGame.away.alias;
 
         $scope.submitForm = function() {
-            $http.post('http://posttestserver.com/post.php?dir=jsfiddle', JSON.stringify(data)).success(function(){/*success callback*/});
             Omlet.ready(function() {
                 if(!isFromRDL()) {
                     var rdl = Omlet.createRDL({
