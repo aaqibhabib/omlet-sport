@@ -73,6 +73,18 @@ angular.module('starter.controllers', [])
     .controller('FormCtrl', function($scope, $http, GameService) {
         var title = GameService.currentGame.home.alias + " VS " + GameService.currentGame.away.alias;
 
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        function isFromRDL() {
+            var qs = getParameterByName("from_rdl");
+            return qs === "true";
+        }
+
         $scope.submitForm = function() {
             alert("enter submit");
             Omlet.ready(function() {
