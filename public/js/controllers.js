@@ -72,7 +72,7 @@ angular.module('starter.controllers', [])
     })
     .controller('FormCtrl', function($scope, $http, GameService) {
         var title = GameService.currentGame.home.alias + " VS " + GameService.currentGame.away.alias;
-
+        var id = GameService.currentGame.id;
         function getParameterByName(name) {
             name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
             var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -100,6 +100,8 @@ angular.module('starter.controllers', [])
                         callback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails"
                     });
                     Omlet.exit(rdl);
+                    var data = GameService.getGameById(id);
+                    $state.go('game', {game: data, gameId: id});
                 }
             })
         };
