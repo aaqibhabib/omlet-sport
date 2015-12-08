@@ -94,7 +94,7 @@ angular.module('starter.controllers', [])
                     var rdl = Omlet.createRDL({
                         noun: "pin-app",
                         displayTitle: title,
-                        displayText: $scope.data.comment,
+                        displayText: $scope.comment,
                         json: {game: GameService.currentGame, gameId: GameService.currentGame.id},
                         webCallback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails",
                         callback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails"
