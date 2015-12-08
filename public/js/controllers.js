@@ -17,6 +17,7 @@ angular.module('starter.controllers', [])
             //check if there is a game open
             GameService.getOpenedGame(groupId).then(function(data) {
                     //if there is a open game, go to the currentGame page
+                    GameService.currentGame = data;
                     $state.go('game', {game: data, gameId: data.id});
                 },
                 function(reason) {
@@ -35,6 +36,8 @@ angular.module('starter.controllers', [])
 
         //Initiate the Timer object.
         $scope.Timer = null;
+        $scope.comments = [];
+
 
         //Timer start function.
         $scope.StartTimer = function () {
@@ -47,6 +50,8 @@ angular.module('starter.controllers', [])
                     if (data) {
                         $scope.currentGame = data;
                         GameService.currentGame = data;
+
+
                         if($scope.currentGame.status == "closed" || $scope.currentGame.status == "scheduled") {
                             $scope.StopTimer();
                         }
@@ -69,10 +74,35 @@ angular.module('starter.controllers', [])
             }
         };
         $scope.StartTimer();
-    })
-    .controller('FormCtrl', function($scope, $http, GameService) {
-        var title = GameService.currentGame.home.alias + " VS " + GameService.currentGame.away.alias;
-        var id = GameService.currentGame.id;
+
+        $scope.submitForm = function(formData) {
+            var title = $scope.currentGame.home.alias + " VS " + $scope.currentGame.away.alias;
+            var comment = "";
+
+            if (formData) {
+                comment = formData;
+                $scope.comments.push(comment);
+            }
+
+            Omlet.ready(function() {
+                if(!isFromRDL()) {
+
+                    var rdl = Omlet.createRDL({
+                        noun: "pin-app",
+                        displayTitle: title,
+                        displayText: comment,
+                        json: {game: $scope.currentGame, gameId: GameService.currentGame.id},
+                        webCallback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails",
+                        callback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails"
+                    });
+                    Omlet.exit(rdl);
+
+                }
+            })
+        };
+
+
+
         function getParameterByName(name) {
             name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
             var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -85,25 +115,6 @@ angular.module('starter.controllers', [])
             return qs === "true";
         }
 
-        $scope.submitForm = function() {
-            alert("enter submit");
-            Omlet.ready(function() {
-                alert("before rdl");
-                if(!isFromRDL()) {
-                    alert("enter rdl");
-                    var rdl = Omlet.createRDL({
-                        noun: "pin-app",
-                        displayTitle: title,
-                        displayText: $scope.comment,
-                        json: {game: GameService.currentGame, gameId: GameService.currentGame.id},
-                        webCallback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails",
-                        callback:"omlet-pinapp:http://ec2-52-34-18-73.us-west-2.compute.amazonaws.com:8080/gameDetails"
-                    });
-                    Omlet.exit(rdl);
-                    var data = GameService.getGameById(id);
-                    $state.go('game', {game: data, gameId: id});
-                }
-            })
-        };
+
     })
 

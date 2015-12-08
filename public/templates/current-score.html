@@ -67,10 +67,14 @@
         </div>
       </div>
 
-      <form name="commentForm" ng-submit="submitForm()" ng-controller="FormCtrl">
-        <input type="text" ng-model="comment" placeholder="Comment...">
-        <input type="submit">
-      </form>
+      <input type="text" name="formData" ng-model="formData" id="form-input" placeholder="Comment...">
+      <button ng-click="submitForm(formData)">
+        submit
+      </button>
+      <ul>
+        <li ng-repeat="comment in comments">{{comment}}</li>
+      </ul>
+
     </div>
 
 

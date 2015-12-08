@@ -10,13 +10,13 @@ angular.module('starter.services', [])
             $http.get("/api/games/" + groupId).
                 success(function (data, status, headers, config) {
                     if (data == null) {
-                        console.log("return empty list of vacation info");
+                        console.log("return empty list of data");
                     }
                     //return the game object
                     deferred.resolve(data);
                 }).
                 error(function (data, status, headers, config) {
-                    console.log("could not get the vacation info, error status is " + status
+                    console.log("could not get the data, error status is " + status
                     + " the response content is " + data);
 
                     deferred.reject(data + status + headers + config);
