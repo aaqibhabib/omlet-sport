@@ -76,7 +76,8 @@ angular.module('starter.controllers', [])
         $scope.StartTimer();
 
         $scope.submitForm = function(formData) {
-            var title = $scope.currentGame.home.alias + " VS " + $scope.currentGame.away.alias;
+            var title = $scope.currentGame.home.alias + " " + $scope.currentGame.home.points
+                + " VS " + $scope.currentGame.away.alias + " " + $scope.currentGame.away.points;
             var comment = "";
 
             if (formData) {
